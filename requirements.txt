@@ -1,0 +1,17 @@
+# Networking
+paho-mqtt
+requests
+socketio
+
+# Data handling
+bencodepy  # For encoding/decoding .torrent files
+
+# Async and concurrency
+asyncio
+
+# Logging and utilities
+loguru
+
+# Testing
+pytest
+pytest-asyncio
