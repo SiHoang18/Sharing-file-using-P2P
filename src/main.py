@@ -5,7 +5,7 @@ from utils.logger import logger
 from torrent.torrent_parser import TorrentParse
 from torrent.torrent_creator import TorrentCreator
 from tracker.tracker import Tracker
-from ui.cli import cli
+from ui.cli import CLI
 def test_single_server_multi_clients():
     # Create server (max_connection=5 for testing)
     server = PeerConnection(port=6881, max_connection=5)
@@ -78,6 +78,4 @@ if __name__ == "__main__":
     # if os.path.exists(a.metadata.get(b'info').get(b'name')):
     #     print("Hello")
     # run_tracker()
-    cli = cli()
-    cli.run()
-    
+    CLI().run()

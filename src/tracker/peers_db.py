@@ -30,11 +30,10 @@ class Peer_DB:
             if self.peer_exist(info_hash,peer_id):
                 self.torrent[info_hash][peer_id] = time.time()
     def cleanup_inactive_peers(self):
-        with self.lock:
-            current_time = time.time()
-            for info_hash in self.torrent:
-                for peer_id in self.torrent[info_hash]:
-                    if current_time - self.torrent[info_hash][peer_id] >= self.timeout:
-                        del self.torrent[info_hash][peer_id]
-                if not self.torrent[info_hash]:
-                    del self.torrent[info_hash]
+        current_time = time.time()
+        for info_hash in list(self.torrent.keys()):
+            for peer_id in list(self.torrent[info_hash].keys()):
+                if current_time - self.torrent[info_hash][peer_id] >= self.timeout:
+                    del self.torrent[info_hash][peer_id]
+            if not self.torrent[info_hash]:
+                del self.torrent[info_hash]

@@ -2,14 +2,14 @@ import os
 import bencodepy
 import hashlib
 from utils.logger import logger
+from utils.config import TORRENT_FOLDER
 class TorrentParse:
-    TORRENT_DIR = "data/torrents"
     def __init__(self, torrent_file):
         self.torrent_file = torrent_file
         self.metadata = {}
         self.metadata = self.load_torrent()
-    def load_torrent(self):
-        path_to_torrent_file = os.path.join(self.TORRENT_DIR, f"{self.torrent_file}")
+    def load_torrent(self,filepath = TORRENT_FOLDER):
+        path_to_torrent_file = os.path.join(filepath, f"{self.torrent_file}")
         if not os.path.exists(path_to_torrent_file):
             logger.error(f"There is no file: {self.torrent_file}")
             return None 
@@ -17,15 +17,16 @@ class TorrentParse:
             with open(path_to_torrent_file, 'rb') as f:
                 data = bencodepy.decode(f.read())
             info = data[b'info']
-            return {
-                b'info': {
-                    b'name': info[b'name'],  
-                    b'pieces': info[b'pieces'],
-                    b'piece_length': info[b'piece_length'],
-                    b'length': info[b'length'],
-                    b'path': info[b'path']
-                }
-            }
+            return data
+            # return {
+            #     b'info': {
+            #         b'name': info[b'name'],  
+            #         b'pieces': info[b'pieces'],
+            #         b'piece_length': info[b'piece_length'],
+            #         b'length': info[b'length'],
+            #         b'path': info[b'path']
+            #     }
+            # }
         except Exception as e:
             logger.error(f"Fail to read file {e}")
             return None

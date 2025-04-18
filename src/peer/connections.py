@@ -1,6 +1,7 @@
 import socket
 import threading
 import json
+import requests
 from utils.logger import logger
 
 class PeerConnection:
@@ -407,3 +408,16 @@ class PeerConnection:
             raise ConnectionError("No active connection")
         
         return self._receive_chunk_data(conn, data_length)
+    def announce_to_tracker(self,tracker_url, torrent_id, peer_ip, port):
+        try:
+            response = requests.post(tracker_url,json={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
+            if response.status_code == 200:
+                data = response.json()
+                print("Peer received from tracker:", data['peers'])
+                return data['peers']
+            else:
+                print("Tracker error:", response.status_code, response.text)
+                return []
+        except Exception as e:
+            print("Error contacting tracker:", e)
+            return []

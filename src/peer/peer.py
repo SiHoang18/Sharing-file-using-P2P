@@ -5,27 +5,23 @@ from utils.logger import logger
 from peer.connections import PeerConnection
 from peer.uploader import Uploader
 from peer.downloader import Downloader
-from utils.config import TRACKER_HOST,TRACKER_PORT
+from utils.config import TRACKER_HOST,TRACKER_PORT, DOWNLOAD_FOLDER
 class Peer:
     def __init__(self,
-                 host: str = '0.0.0.0',
+                 host: str = '127.0.0.1',
                  port: int = 6881,
-                 max_connections = 4,
+                 max_connections = 5,
                  shared_files = None,
+                 save_path = None,
+                 is_seed = False
                  ):
-        """
-        Initialize P2P peer node
-        :param host: Network interface binding
-        :param port: Listening port for incoming connections
-        :param max_connections: Maximum simultaneous connections
-        :param shared_files: Dictionary of shared files metadata
-        :param storage_dir: Local directory for file storage
-        """
         # Network configuration
         self.host = host
         self.port = port
         self.max_connections = max_connections
         self.peer_list = ()
+        self.save_path = save_path 
+        # self.is_seed = is_seed
         # File management
         self.shared_files = shared_files or {}
         self.shared_files = {
@@ -55,7 +51,8 @@ class Peer:
         self.downloader = Downloader(
             chunk_size=512,
             peers=self.connection.peer_pool,
-            metadata=shared_files,
+            metadata=shared_files if not is_seed else None,
+            save_path=self.save_path
         )
         
         # Concurrency control
@@ -194,6 +191,13 @@ class Peer:
             header=header,
             data=data,
             expect_response=expect_rep
+        )
+    def announce_to_tracker(self,tracker_url, torrent_id, peer_ip, port):
+        return self.connection.announce_to_tracker(
+            tracker_url=tracker_url,
+            torrent_id = torrent_id,
+            peer_ip = peer_ip,
+            port= port
         )
     def get_network_status(self) -> dict:
         """Return current network connection status"""

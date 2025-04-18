@@ -3,8 +3,8 @@ from utils.config import TRACKER_HOST, TRACKER_PORT
 from torrent.torrent_creator import TorrentCreator
 from torrent.torrent_parser import TorrentParse
 import time
-import threading
-import json
+from ui.cli import CLI
+
 def start_client1(peer_ip="127.0.0.1", peer_port=5002):
     # Instantiate the Peer (wrapper for PeerConnection)
     try:
@@ -29,4 +29,5 @@ def start_client1(peer_ip="127.0.0.1", peer_port=5002):
         a.stop()
 
 if __name__ == "__main__":
-    start_client1()
+    # start_client1()
+    CLI().run()

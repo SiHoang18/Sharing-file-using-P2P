@@ -1,5 +1,7 @@
-2025-04-17 10:42:00,678 - INFO - Inactive peers removed
-2025-04-17 10:42:00,678 - INFO - Tracker started on 127.0.0.1:6000
-2025-04-17 10:42:09,352 - INFO - Shutting down tracker...
-2025-04-17 10:42:09,356 - ERROR - Exception in tracker server loop: [WinError 10038] An operation was attempted on something that is not a socket
-2025-04-17 10:42:09,356 - INFO - Tracker shut down successfully.
+2025-04-18 16:34:42,782 - INFO - Starting tracker on 127.0.0.1:6881
+2025-04-18 16:34:42,782 - INFO - Cleaned up inactive peers
+2025-04-18 16:34:42,824 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:6881
+2025-04-18 16:34:42,824 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-18 16:35:42,794 - INFO - Cleaned up inactive peers
+2025-04-18 16:36:18,677 - INFO - Shutting down tracker...
