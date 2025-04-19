@@ -421,3 +421,22 @@ class PeerConnection:
         except Exception as e:
             print("Error contacting tracker:", e)
             return []
+    def stop_connect_to_tracker(self,tracker_url, torrent_id, peer_ip, port):
+        try:
+            response = requests.post(tracker_url,json={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
+        except Exception as e:
+            print("Error stopping tracker:", e)
+    def update_peer_list(self,tracker_url, torrent_id, peer_ip, port):
+        try:
+            response = requests.post(tracker_url,json={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
+            data = response.json()
+            return data["peers"]
+        except Exception as e:
+            print("Error updating peer list:", e)
+    def update_time(self,tracker_url, torrent_id, peer_ip, port):
+        try:
+            response = requests.post(tracker_url,json={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
+            data = response.json()
+            return data["message"]
+        except Exception as e:
+            print("Error updating last seen time:", e)

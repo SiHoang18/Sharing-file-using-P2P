@@ -21,6 +21,7 @@ class Peer:
         self.max_connections = max_connections
         self.peer_list = ()
         self.save_path = save_path 
+        self.update_interval = 90
         # self.is_seed = is_seed
         # File management
         self.shared_files = shared_files or {}
@@ -94,9 +95,23 @@ class Peer:
         # self.uploader.stop()
         self.connection.stop()
         self.running = False
-
+    def start_periodic_updates(self, tracker_url, torrent_id):
+        self.active = True
+        def update_wrapper():
+            if self.active:
+                self.update_time(tracker_url, torrent_id, self.host, self.port)
+                # Reschedule
+                self.update_timer = threading.Timer(self.update_interval, update_wrapper)
+                self.update_timer.start()
+                
+        # Initial start
+        self.update_timer = threading.Timer(self.update_interval, update_wrapper)
+        self.update_timer.start()
     def stop(self) -> None:
         """Gracefully shutdown peer and clean up resources"""
+        self.active = False
+        if self.update_timer:
+            self.update_timer.cancel()
         with self.lock:
             if not self.running:
                 logger.debug("Peer already stopped")
@@ -194,10 +209,36 @@ class Peer:
         )
     def announce_to_tracker(self,tracker_url, torrent_id, peer_ip, port):
         return self.connection.announce_to_tracker(
-            tracker_url=tracker_url,
+            tracker_url=tracker_url + '/announce',
             torrent_id = torrent_id,
             peer_ip = peer_ip,
             port= port
+        )
+    def stop_connect_to_tracker(self, tracker_url, torrent_id, peer_ip, port):
+        try:
+            return self.connection.stop_connect_to_tracker(
+                tracker_url=tracker_url + '/stop',
+                torrent_id=torrent_id,
+                peer_ip=peer_ip,
+                port=port
+            )
+        except Exception as e:
+            logger.warning(f"Could not notify tracker: {e}")
+            return False
+
+    def update_peer_list(self,tracker_url, torrent_id, peer_ip, port):
+        return self.connection.update_peer_list(
+            tracker_url=tracker_url + '/peer_list_update',
+            torrent_id=torrent_id,
+            peer_ip=peer_ip,
+            port=port
+        )
+    def update_time(self,tracker_url, torrent_id, peer_ip, port):
+        return self.connection.update_time(
+            tracker_url=tracker_url + '/time_update',
+            torrent_id=torrent_id,
+            peer_ip=peer_ip,
+            port=port
         )
     def get_network_status(self) -> dict:
         """Return current network connection status"""

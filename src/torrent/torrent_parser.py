@@ -16,7 +16,7 @@ class TorrentParse:
         try:
             with open(path_to_torrent_file, 'rb') as f:
                 data = bencodepy.decode(f.read())
-            info = data[b'info']
+            # info = data[b'info']
             return data
             # return {
             #     b'info': {

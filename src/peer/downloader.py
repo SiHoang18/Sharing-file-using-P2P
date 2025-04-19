@@ -58,20 +58,21 @@ class Downloader:
     def get_download_status(self):
         status = {"files": {}, "active_peers": list(self.active_downloads.keys())}
         
-        # for file_name, metadata in self.metadata.items():
-        file_name = self.metadata[b'name']
-        
+        # Decode the file name from bytes to string
+        file_name_bytes = self.metadata[b'name']
+        file_name_str = file_name_bytes.decode('utf-8')
         file_size = self.metadata[b"length"]
         chunk_size = self.metadata[b"piece_length"]
             
         total_chunks = (file_size + chunk_size - 1) // chunk_size
-        downloaded = 0
-        for peer_id in self.chunks_data:
-            downloaded += len(self.chunks_data[peer_id][file_name]) 
+        # Get the downloaded chunks for the current file
+        downloaded_chunks = self.chunks_data.get(file_name_str, [])
+        downloaded = len(downloaded_chunks)
+        
         # Calculate progress
         progress = (downloaded / total_chunks * 100) if total_chunks > 0 else 0.0
             
-        status[file_name] = {
+        status["files"][file_name_str] = {
             "downloaded_bytes": downloaded * chunk_size,
             "total_bytes": file_size,
             "progress": round(progress, 2),
@@ -79,7 +80,7 @@ class Downloader:
                 "downloaded": downloaded,
                 "total": total_chunks
             }
-            }
+        }
         return status
     def stop(self):
         with self.stop:

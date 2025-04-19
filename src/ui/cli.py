@@ -8,7 +8,7 @@ from utils.config import CHUNK_SIZE, TRACKER_HOST, TRACKER_PORT, TORRENT_FOLDER,
 from torrent.torrent_creator import TorrentCreator
 from torrent.torrent_parser import TorrentParse
 from peer.peer import Peer 
-
+from utils.logger import logger
 class InteractiveCLI(cmd.Cmd):
     prompt = "<p2p> "
     intro  = "BitTorrent-style P2P CLI (type 'help' for commands)"
@@ -19,12 +19,14 @@ class InteractiveCLI(cmd.Cmd):
         self.metadata = None
         self.active_peer = None
         self.active_tracker = None
+        self.filepath = None
         self.peer_list = None
-
+        self.tracker_url = None
     def do_seed(self, arg: str):
-        """Start seeding a file: seed <filepath> --tracker <tracker_url>"""
+        """Start seeding a file: seed <filepath> --host <host> --port <port> [--tracker <tracker_url>]"""
         try:
-            args = self.cli._parse_seed_args(arg.split())
+            import shlex
+            args = self.cli._parse_seed_args(shlex.split(arg))
             self._start_seeding(args)
         except SystemExit:
             pass
@@ -33,16 +35,20 @@ class InteractiveCLI(cmd.Cmd):
         print(f"Seeding file: {args.filepath}")
         torrent = TorrentParse(args.filepath)
         self.metadata = torrent.get_info()
-        print(self.metadata)
+        if self.metadata is None:
+            raise Exception
+        self.tracker_url = args.tracker if args.tracker else torrent.get_announce_url()
+        self.filepath =  args.filepath
         self.active_peer = Peer(
             host=args.host,
             port=args.port,
             shared_files=self.metadata,
             save_path=DOWNLOAD_FOLDER
-            # is_seed=True
         )
         threading.Thread(target=self.active_peer.start, daemon=True).start()
-        self.active_peer.get_peer_list(self.active_peer.announce_to_tracker(args.tracker,args.filepath,args.host,args.port))
+        peer_list = self.active_peer.announce_to_tracker(self.tracker_url, args.filepath, args.host, args.port)
+        self.active_peer.get_peer_list(peer_list)
+        self.active_peer.start_periodic_updates(self.tracker_url, args.filepath)
     def do_download(self, arg: str):
         """Download a file: download <torrent_file>"""
         try:
@@ -55,19 +61,30 @@ class InteractiveCLI(cmd.Cmd):
         print(f"Downloading from torrent: {args.filepath}")
         torrent = TorrentParse(args.filepath)
         self.metadata = torrent.get_info()
-        if not self.active_peer:
-            self.active_peer = Peer(
-                host=args.host,
-                port=args.port,
-                shared_files=self.metadata,
-                save_path=args.s
-            )
-        threading.Thread(target=self.active_peer.start, daemon=True).start()
-        self.active_peer.get_peer_list(self.active_peer.announce_to_tracker(torrent.get_announce_url(),args.filepath,args.host,args.port))
-        for peer in self.active_peer.peer_list:
-            if (self.active_peer.host,self.active_peer.port) != tuple(peer):
-                self.active_peer.connect_to_peer(tuple(peer))
-        self.active_peer.download(self.metadata[b'name'])
+        if self.metadata is None:
+            raise Exception
+        self.tracker_url = torrent.get_announce_url()
+        self.filepath =  args.filepath
+        try:
+            if not self.active_peer:
+                self.active_peer = Peer(
+                    host=args.host,
+                    port=args.port,
+                    shared_files=self.metadata,
+                    save_path=args.s
+                )
+                threading.Thread(target=self.active_peer.start, daemon=True).start()
+                self.active_peer.get_peer_list(self.active_peer.announce_to_tracker(self.tracker_url,args.filepath,args.host,args.port))
+            else:
+                threading.Thread(target=self.active_peer.start, daemon=True).start()
+                self.active_peer.get_peer_list(self.active_peer.update_peer_list(self.tracker_url,args.filepath,args.host,args.port))
+            self.active_peer.start_periodic_updates(self.tracker_url, self.filepath)
+            for peer in self.active_peer.peer_list:
+                if (self.active_peer.host,self.active_peer.port) != tuple(peer):
+                    self.active_peer.connect_to_peer(tuple(peer))
+            self.active_peer.download(self.metadata[b'name'])
+        except Exception as e:
+            logger.error(f"Fail to open torrent: {e}")
 
     def do_create(self, arg: str):
         """Create torrent file: create -filepath <path> --tracker <url> [options]"""
@@ -103,6 +120,7 @@ class InteractiveCLI(cmd.Cmd):
         """Exit the program"""
         print("Shutting down...")
         if self.active_peer:
+            self.active_peer.stop_connect_to_tracker(self.tracker_url,self.filepath,self.active_peer.host,self.active_peer.port)
             self.active_peer.stop()
         if self.active_tracker:
             self.active_tracker.shutdown()
@@ -126,11 +144,11 @@ class CLI:
         seed_p.add_argument("-filepath",required=True, help="Path to the file to seed")
         seed_p.add_argument("--host",type=str,default="127.0.0.1",required=True,help="Peer's host")
         seed_p.add_argument("--port",type=int,default=6000,required=True,help="Peer's port")
-        seed_p.add_argument("--tracker", required=True, help="Tracker URL")
+        seed_p.add_argument("--tracker", help="Tracker URL")
 
         # download
         dl_p = self.subparsers.add_parser("download", help="Download a file")
-        dl_p.add_argument("-filepath",type=str, required=True, help="Torrent file name")
+        dl_p.add_argument("-filepath", required=True, help="Torrent file name")
         dl_p.add_argument("--host",type=str, default="127.0.0.1", help="Peer's host")
         dl_p.add_argument("--port",type=int, default=6000, help="Peer's port")
         dl_p.add_argument("-s",type=str, default=DOWNLOAD_FOLDER, help="Download directory")
@@ -200,20 +218,5 @@ class CLI:
                 self._start_tracker(args)
         else:
             InteractiveCLI(self).cmdloop()
-
-    # def _start_seeding(self, args):
-    #     print(f"Seeding file: {args.filepath}")
-    #     peer = Peer(file_path=args.filepath, tracker_url=args.tracker)
-    #     peer.start()
-
-    # def _start_download(self, args):
-    #     print(f"Downloading from torrent: {args.torrent_file}")
-    #     peer = Peer(is_seeder=False)
-    #     peer.start_download(args.torrent_file)
-
-    # def _start_tracker(self, args):
-    #     print(f"Starting tracker at {args.host}:{args.port}")
-    #     tracker = Tracker(host=args.host, port=args.port)
-    #     tracker.run()
 
 
