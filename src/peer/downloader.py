@@ -29,9 +29,9 @@ class Downloader:
                     self.active_downloads[peer_id][file_name].append(chunk_index)
             if chunk_data and chunk_data not in self.chunks_data:
                 self.chunks_data[file_name].append((chunk_index,chunk_data))
+                logger.info(f"Downloading {chunk_index} from {peer_id} completed")
             if self._is_complete(file_name):
                 self._assemble_file(file_name)
-            logger.info(f"Downloading {chunk_index} completed")
             return True
         except Exception as e:
             logger.error(f"Download failed: {e}")
@@ -45,11 +45,9 @@ class Downloader:
         file_meta = self.metadata
         output_path = os.path.join(self.save_path, file_name)
         sorted_chunks = sorted(self.chunks_data[file_name], key=lambda x: x[0])
-        
         with open(output_path, "wb") as f:
             for _, chunk_data in sorted_chunks:
                 f.write(chunk_data)
-        
         logger.info(f"Assembled {file_name} ({file_meta[b'length']} bytes)")
     def add_peer(self, peer_id,conn):
         self.peers[peer_id] = conn
@@ -83,7 +81,7 @@ class Downloader:
         }
         return status
     def stop(self):
-        with self.stop:
+        with self.lock:
             self.active_downloads.clear()
     def get_chunk_data(self, file_id, chunk_index):
         for chunk in self.chunks_data.get(file_id, []):

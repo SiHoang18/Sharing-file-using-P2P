@@ -12,7 +12,7 @@ class Peer:
                  port: int = 6881,
                  max_connections = 5,
                  shared_files = None,
-                 save_path = None,
+                 save_path = "data/downloads",
                  is_seed = False
                  ):
         # Network configuration
@@ -108,17 +108,21 @@ class Peer:
         self.update_timer = threading.Timer(self.update_interval, update_wrapper)
         self.update_timer.start()
     def stop(self) -> None:
-        """Gracefully shutdown peer and clean up resources"""
         self.active = False
-        if self.update_timer:
+        if hasattr(self, "update_timer") and self.update_timer:
             self.update_timer.cancel()
+            self.update_timer = None
+
         with self.lock:
             if not self.running:
                 logger.debug("Peer already stopped")
                 return
-                
+
             logger.info("Initiating shutdown sequence...")
-            self.running = False 
+            self.running = False
+
+        self.downloader.stop()
+        self.uploader.stop()
         self.connection.stop()
         logger.info("Peer shutdown complete")
         
@@ -136,15 +140,56 @@ class Peer:
             if not self.running:
                 logger.error("Peer not running")
                 return
-                
-            # Convert bytes to string if needed
-            file_id_str = file_id.decode('utf-8') if isinstance(file_id, bytes) else file_id
-            total_chunks = len(self.shared_files[b'pieces']) // 20
-            
-            for chunk_index in range(total_chunks):
-                for peer_address in self.peer_list:
-                    if tuple(peer_address) != (self.host,self.port):
-                        self.request_chunk(file_id=file_id_str,chunk_index=chunk_index,peer_address=tuple(peer_address))
+
+        file_id_str = file_id.decode('utf-8') if isinstance(file_id, bytes) else file_id
+
+        if b'pieces' not in self.shared_files:
+            logger.error("Torrent metadata missing 'pieces'")
+            return
+
+        total_chunks = len(self.shared_files[b'pieces']) // 20
+        logger.info(f"Total chunks to download: {total_chunks}")
+        logger.info(f"Peer list: {self.peer_list}")
+
+        downloaded_chunks = set()
+        download_lock = threading.Lock()
+        
+        def download_chunk(chunk_index):
+            threads = []
+            state = False
+            for peer_address in self.peer_list:
+                peer_tuple = tuple(peer_address)
+                if peer_tuple == (self.host, self.port):
+                    continue  # Skip self
+                def check():
+                    success = self.request_chunk(
+                        file_id=file_id_str,
+                        chunk_index=chunk_index,
+                        peer_address=peer_tuple
+                    )
+
+                    if success:
+                        state = True
+                        logger.info(f"Chunk {chunk_index} downloaded from {peer_tuple}")
+                        with download_lock:
+                            downloaded_chunks.add(chunk_index)
+                        return
+                t = threading.Thread(target=check)
+                threads.append(t)
+                t.start()
+            for t in threads:
+                if t.is_alive():
+                    t.join()
+
+        for chunk_index in range(total_chunks):
+            download_chunk(chunk_index)
+
+        if len(downloaded_chunks) == total_chunks:
+            logger.info("Multi-peer download completed successfully.")
+        else:
+            missing = total_chunks - len(downloaded_chunks)
+            logger.warning(f"{missing} chunks could not be downloaded.")
+
     def update_peer_list(self,torrent_id):
         with self.lock:
             if not self.running:

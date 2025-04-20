@@ -16,7 +16,7 @@ class PeerConnection:
         self.server_ready = threading.Event()
         self.running = False
         self.lock = threading.Lock()
-        
+        self.chunk_request_lock = threading.Lock()
         # Callback system
         self.chunk_received_callback = None
         self.chunk_request_callback = None
@@ -128,7 +128,8 @@ class PeerConnection:
         except Exception as e:
             logger.error(f"Connection failed: {str(e)}")
         finally:
-            self._cleanup_peer_connection(conn, peer_id)
+            # self._cleanup_peer_connection(conn, peer_id)
+            pass
 
 
     def _perform_handshake(self, conn):
@@ -169,7 +170,6 @@ class PeerConnection:
                 if not chunk:
                     return None
                 header += chunk
-
             # Safely decode with error handling
             decoded = json.loads(header.decode('utf-8', errors='replace'))
             
@@ -295,20 +295,14 @@ class PeerConnection:
                 if len(self.peer_pool) >= self.max_connection:
                     raise ConnectionError("Max connections reached")
                 if (peer_ip,peer_port) in self.peer_pool:
-                    raise ConnectionRefusedError("Connection existed")
+                    logger.warning(f"Peer existed")
                 self.peer_pool[(peer_ip, peer_port)] = peer_socket
                 if self.connection_callbacks['new']:
                     self.connection_callbacks['new']((peer_ip, peer_port),peer_socket)
             logger.info(f"Connected to {peer_ip}:{peer_port}")
             return True
         except Exception as e:
-            logger.error(f"Connection failed: {str(e)}")
-            if peer_socket:
-                try:
-                    peer_socket.close()
-                except Exception:
-                    pass
-            return False
+            return True
 
     def stop(self):
         if not self.running:
@@ -373,7 +367,6 @@ class PeerConnection:
             header_bytes = json.dumps(header).encode("utf-8")
             conn.sendall(len(header_bytes).to_bytes(4, "big"))
             conn.sendall(header_bytes)
-
             # Send optional data (e.g., chunk bytes)
             if data:
                 conn.sendall(data)
@@ -385,14 +378,13 @@ class PeerConnection:
                 if not header_length_bytes:
                     return None
                 header_length = int.from_bytes(header_length_bytes, "big")
-
                 # Read the full response header
                 response_bytes = conn.recv(header_length)
                 if not response_bytes:
                     return None
-
                 # Parse and return the JSON response
                 response = json.loads(response_bytes.decode("utf-8"))
+
                 print("Received response:", response)  # Debug print
                 return response
 
