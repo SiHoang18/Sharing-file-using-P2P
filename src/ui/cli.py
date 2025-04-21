@@ -69,7 +69,7 @@ class InteractiveCLI(cmd.Cmd):
                 self.active_peer.port
             )
             if not self.active_peer.update_thread:
-                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,self.filepath),daemon=True).start()
+                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,repr(self.metadata)),daemon=True).start()
                 self.active_peer.update_thread = True
             self.active_peer.get_peer_list(peer_list)
         except SystemExit:
@@ -109,13 +109,14 @@ class InteractiveCLI(cmd.Cmd):
                     self.active_peer.port
                 )
             if not self.active_peer.update_thread:
-                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,self.filepath),daemon=True).start()
+                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,repr(self.metadata)),daemon=True).start()
                 self.active_peer.update_thread = True
             self.active_peer.get_peer_list(peer_list)
             for peer in self.active_peer.peer_list:
                 if (self.active_peer.host, self.active_peer.port) != tuple(peer):
                     self.active_peer.connect_to_peer(tuple(peer))
-            self.active_peer.download(self.metadata[b'name'],args.s)
+            self.active_peer.downloader.assembled = False
+            self.active_peer.download(self.metadata[b'name'])
         except SystemExit:
             pass
         except Exception as e:
@@ -183,14 +184,14 @@ class CLI:
         # download (for interactive only)
         dl_p = self.subparsers.add_parser("download", help=argparse.SUPPRESS)
         dl_p.add_argument("-filepath", required=True, help="Torrent file name")
-        dl_p.add_argument("-s", type=str, default=DOWNLOAD_FOLDER, help="Download directory")
+        # dl_p.add_argument("-s", type=str, default=DOWNLOAD_FOLDER, help="Download directory")
 
         # create
         create_p = self.subparsers.add_parser("create", help="Create torrent file")
         create_p.add_argument("-filepath", type=str, required=True, help="File to share")
         create_p.add_argument("--tracker", type=str, required=True, help="Tracker URL")
         create_p.add_argument("--piece_length", type=int, default=CHUNK_SIZE)
-        create_p.add_argument("-s", type=str, default=TORRENT_FOLDER, help="Output directory")
+        # create_p.add_argument("-s", type=str, default=TORRENT_FOLDER, help="Output directory")
 
         # run-tracker
         tracker_p = self.subparsers.add_parser(
@@ -230,7 +231,7 @@ class CLI:
             tracker_url=args.tracker,
             piece_length=args.piece_length
         )
-        output_path = torrent.create_torrent(args.s)
+        output_path = torrent.create_torrent(TORRENT_FOLDER)
         print(f"Torrent created: {output_path}")
 
     def run(self):

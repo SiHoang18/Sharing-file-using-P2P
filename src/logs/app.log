@@ -1,59 +1,93 @@
-2025-04-21 21:31:45,981 - INFO - Peer started successfully
-2025-04-21 21:31:45,981 - INFO - Peer server listening on 127.0.0.1:6002
-2025-04-21 21:31:59,350 - INFO - Cleaned up inactive peers
-2025-04-21 21:32:01,922 - INFO - 127.0.0.1 - - [21/Apr/2025 21:32:01] "POST /peer_list_update HTTP/1.1" 200 -
-2025-04-21 21:32:01,922 - INFO - 127.0.0.1 - - [21/Apr/2025 21:32:01] "GET /announce?torrent_id=OrderedDict({b'name':+b'Chapter_2_v8.0.pdf',+b'length':+5006359,+b'piece_length':+524288,+b'pieces':+b'\\x189\\x82\\xab.\\nG*hk)\\xe6\\xe3\\xc6%26\\xb4\\xd5\\xd0@\\xd6\\xe7\\xf1\\xcf\\xe3\\xc3\\x19\\xa4qDq\\xa3D\\xd8\\x7f\\xf4\\xda\\x96L\\xee\\xdb\\x83\\xaf\\xb2\\xe0\\x08\\x82\\x88\\x812\\xe9\\xf2D*\\xac/?\\xee\\x1f\\x19\\xc2r\\x8e\\xdd\\xa3aV\\xed\\x95Z\\xceh^\\x0e\\xd0\\xdf\\x11\\x8f%23\\x9dc\\xbf\\x1a2|\\xf2-\\x8b\\x7f\\t\\x90h\\xf4c\\x0b\\x1c\\x8e\\x00\\x02C\\xc4\\xef%25\\x9a\\x90S|\\x00\\xd1\\x86\\xfb\\xb9\\xa5\\x15P\\x1fl\\x01lT\\x8cKK\\x83\\x8f\\xd4\\x9aj\\xaa\\xf7.\\xfa\\xcc\\xa9p2(\\xd9\\xc3\\xde\\x10\\x8c\\xba\\xf6\\xcd\\xfc\\x81;\\xbdH(\\xcf!\\xc4\\x7f\\xf6DR\\x88\\x0f\\x1a\\x93v\\xdaj3\\xf9\\xf54:\\xc6:\\xf8\\x1c1\\xee\\xd8V\\x819\\x9b\\xbd\\xbf\\x8f\\xa6\\x87y\\xb7\\x81\\xc4wK^K!2HsI\\xd3L',+b'private':+0,+b'path':+b'D:\\\\CO3093+-++M\\xe1\\xba\\xa1ng+m\\xc3\\xa1y+t\\xc3\\xadnh\\\\Slides\\\\Slides_Nguy\\xe1\\xbb\\x85n+L\\xc3\\xaa+Duy+Lai_HK221\\\\Chapter_2_v8.0.pdf'})&peer_ip=127.0.0.1&port=6002 HTTP/1.1" 200 -
-2025-04-21 21:32:01,922 - INFO - Incoming connection from ('127.0.0.1', 55572)
-2025-04-21 21:32:01,934 - INFO - Handshake completed
-2025-04-21 21:32:01,934 - INFO - Connected to 127.0.0.1:6000
-2025-04-21 21:32:01,934 - INFO - Incoming connection from ('127.0.0.1', 55574)
-2025-04-21 21:32:01,935 - WARNING - Attempted to update non-existent peer ('127.0.0.1', 6002) for torrent Chapter_2_v8.0.pdf.torrent
-2025-04-21 21:32:01,935 - INFO - 127.0.0.1 - - [21/Apr/2025 21:32:01] "POST /time_update HTTP/1.1" 200 -
-2025-04-21 21:32:01,944 - INFO - Handshake completed
-2025-04-21 21:32:01,944 - INFO - Connected to 127.0.0.1:6001
-2025-04-21 21:32:01,945 - INFO - Total chunks to download: 10
-2025-04-21 21:32:01,945 - INFO - Peer list: [['127.0.0.1', 6000], ['127.0.0.1', 6001]]
-2025-04-21 21:32:01,947 - INFO - Downloading 0 from ('127.0.0.1', 6001) completed
-2025-04-21 21:32:01,947 - INFO - Chunk 0 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,947 - INFO - Chunk 0 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,949 - INFO - Downloading 1 from ('127.0.0.1', 6000) completed
-2025-04-21 21:32:01,949 - INFO - Chunk 1 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,963 - INFO - Chunk 1 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,963 - INFO - Downloading 2 from ('127.0.0.1', 6000) completed
-2025-04-21 21:32:01,963 - INFO - Chunk 2 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,963 - INFO - Chunk 2 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,966 - INFO - Downloading 3 from ('127.0.0.1', 6001) completed
-2025-04-21 21:32:01,966 - INFO - Chunk 3 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,966 - INFO - Chunk 3 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,969 - INFO - Downloading 4 from ('127.0.0.1', 6000) completed
-2025-04-21 21:32:01,969 - INFO - Chunk 4 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,969 - INFO - Chunk 4 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,970 - INFO - Downloading 5 from ('127.0.0.1', 6001) completed
-2025-04-21 21:32:01,970 - INFO - Chunk 5 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,970 - INFO - Chunk 5 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,972 - INFO - Downloading 6 from ('127.0.0.1', 6000) completed
-2025-04-21 21:32:01,972 - INFO - Chunk 6 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,980 - INFO - Chunk 6 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,983 - INFO - Downloading 7 from ('127.0.0.1', 6000) completed
-2025-04-21 21:32:01,983 - INFO - Chunk 7 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,983 - INFO - Chunk 7 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,984 - INFO - Downloading 8 from ('127.0.0.1', 6000) completed
-2025-04-21 21:32:01,984 - INFO - Chunk 8 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,985 - INFO - Chunk 8 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,986 - INFO - Downloading 9 from ('127.0.0.1', 6000) completed
-2025-04-21 21:32:01,988 - INFO - Assembled Chapter_2_v8.0.pdf (5006359 bytes)
-2025-04-21 21:32:01,988 - INFO - Chunk 9 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,989 - INFO - Chunk 9 downloaded from ('127.0.0.1', 6001)
-2025-04-21 21:32:01,989 - INFO - Multi-peer download completed successfully.
-2025-04-21 21:32:50,789 - WARNING - Attempted to update non-existent peer ('127.0.0.1', 6000) for torrent Chapter_2_v8.0.pdf.torrent
-2025-04-21 21:32:50,789 - INFO - 127.0.0.1 - - [21/Apr/2025 21:32:50] "POST /time_update HTTP/1.1" 200 -
-2025-04-21 21:32:59,354 - INFO - Cleaned up inactive peers
-2025-04-21 21:33:05,931 - WARNING - Attempted to update non-existent peer ('127.0.0.1', 6001) for torrent Chapter_2_v8.0.pdf.torrent
-2025-04-21 21:33:05,931 - INFO - 127.0.0.1 - - [21/Apr/2025 21:33:05] "POST /time_update HTTP/1.1" 200 -
-2025-04-21 21:33:31,946 - WARNING - Attempted to update non-existent peer ('127.0.0.1', 6002) for torrent Chapter_2_v8.0.pdf.torrent
-2025-04-21 21:33:31,946 - INFO - 127.0.0.1 - - [21/Apr/2025 21:33:31] "POST /time_update HTTP/1.1" 200 -
-2025-04-21 21:33:59,360 - INFO - Cleaned up inactive peers
-2025-04-21 21:34:20,794 - WARNING - Attempted to update non-existent peer ('127.0.0.1', 6000) for torrent Chapter_2_v8.0.pdf.torrent
-2025-04-21 21:34:20,794 - INFO - 127.0.0.1 - - [21/Apr/2025 21:34:20] "POST /time_update HTTP/1.1" 200 -
-2025-04-21 21:34:35,947 - WARNING - Attempted to update non-existent peer ('127.0.0.1', 6001) for torrent Chapter_2_v8.0.pdf.torrent
-2025-04-21 21:34:35,947 - INFO - 127.0.0.1 - - [21/Apr/2025 21:34:35] "POST /time_update HTTP/1.1" 200 -
+2025-04-21 22:24:28,781 - INFO - Peer started successfully
+2025-04-21 22:24:28,781 - INFO - Peer server listening on 127.0.0.1:6002
+2025-04-21 22:24:36,311 - INFO - 127.0.0.1 - - [21/Apr/2025 22:24:36] "POST /peer_list_update HTTP/1.1" 200 -
+2025-04-21 22:24:36,314 - INFO - 127.0.0.1 - - [21/Apr/2025 22:24:36] "GET /announce?torrent_id=OrderedDict({b'name':+b'Chapter_2_v8.0.pdf',+b'length':+5006359,+b'piece_length':+524288,+b'pieces':+b'\\x189\\x82\\xab.\\nG*hk)\\xe6\\xe3\\xc6%26\\xb4\\xd5\\xd0@\\xd6\\xe7\\xf1\\xcf\\xe3\\xc3\\x19\\xa4qDq\\xa3D\\xd8\\x7f\\xf4\\xda\\x96L\\xee\\xdb\\x83\\xaf\\xb2\\xe0\\x08\\x82\\x88\\x812\\xe9\\xf2D*\\xac/?\\xee\\x1f\\x19\\xc2r\\x8e\\xdd\\xa3aV\\xed\\x95Z\\xceh^\\x0e\\xd0\\xdf\\x11\\x8f%23\\x9dc\\xbf\\x1a2|\\xf2-\\x8b\\x7f\\t\\x90h\\xf4c\\x0b\\x1c\\x8e\\x00\\x02C\\xc4\\xef%25\\x9a\\x90S|\\x00\\xd1\\x86\\xfb\\xb9\\xa5\\x15P\\x1fl\\x01lT\\x8cKK\\x83\\x8f\\xd4\\x9aj\\xaa\\xf7.\\xfa\\xcc\\xa9p2(\\xd9\\xc3\\xde\\x10\\x8c\\xba\\xf6\\xcd\\xfc\\x81;\\xbdH(\\xcf!\\xc4\\x7f\\xf6DR\\x88\\x0f\\x1a\\x93v\\xdaj3\\xf9\\xf54:\\xc6:\\xf8\\x1c1\\xee\\xd8V\\x819\\x9b\\xbd\\xbf\\x8f\\xa6\\x87y\\xb7\\x81\\xc4wK^K!2HsI\\xd3L',+b'private':+0,+b'path':+b'D:\\\\CO3093+-++M\\xe1\\xba\\xa1ng+m\\xc3\\xa1y+t\\xc3\\xadnh\\\\Slides\\\\Slides_Nguy\\xe1\\xbb\\x85n+L\\xc3\\xaa+Duy+Lai_HK221\\\\Chapter_2_v8.0.pdf'})&peer_ip=127.0.0.1&port=6002 HTTP/1.1" 200 -
+2025-04-21 22:24:36,315 - INFO - Incoming connection from ('127.0.0.1', 57434)
+2025-04-21 22:24:36,317 - INFO - Handshake completed
+2025-04-21 22:24:36,317 - INFO - Connected to 127.0.0.1:6000
+2025-04-21 22:24:36,317 - INFO - Incoming connection from ('127.0.0.1', 57436)
+2025-04-21 22:24:36,318 - INFO - 127.0.0.1 - - [21/Apr/2025 22:24:36] "POST /time_update HTTP/1.1" 200 -
+2025-04-21 22:24:36,335 - INFO - Connected to 127.0.0.1:6001
+2025-04-21 22:24:36,335 - INFO - Total chunks to download: 10
+2025-04-21 22:24:36,335 - INFO - Peer list: [['127.0.0.1', 6000], ['127.0.0.1', 6001]]
+2025-04-21 22:24:36,336 - INFO - Downloading 0 from ('127.0.0.1', 6001) completed
+2025-04-21 22:24:36,338 - INFO - Downloading 1 from ('127.0.0.1', 6001) completed
+2025-04-21 22:24:36,340 - INFO - Downloading 2 from ('127.0.0.1', 6001) completed
+2025-04-21 22:24:36,341 - INFO - Downloading 3 from ('127.0.0.1', 6000) completed
+2025-04-21 22:24:36,342 - INFO - Downloading 4 from ('127.0.0.1', 6000) completed
+2025-04-21 22:24:36,344 - INFO - Downloading 5 from ('127.0.0.1', 6001) completed
+2025-04-21 22:24:36,345 - INFO - Downloading 6 from ('127.0.0.1', 6001) completed
+2025-04-21 22:24:36,348 - INFO - Downloading 7 from ('127.0.0.1', 6000) completed
+2025-04-21 22:24:36,349 - INFO - Downloading 8 from ('127.0.0.1', 6001) completed
+2025-04-21 22:24:36,351 - INFO - Downloading 9 from ('127.0.0.1', 6001) completed
+2025-04-21 22:24:36,354 - INFO - Assembled Chapter_2_v8.0.pdf (5006359 bytes)
+2025-04-21 22:24:36,366 - INFO - Multi-peer download completed successfully.
+2025-04-21 22:25:09,096 - INFO - Cleaned up inactive peers
+2025-04-21 22:25:31,787 - INFO - 127.0.0.1 - - [21/Apr/2025 22:25:31] "POST /peer_list_update HTTP/1.1" 200 -
+2025-04-21 22:25:31,791 - INFO - 127.0.0.1 - - [21/Apr/2025 22:25:31] "GET /announce?torrent_id=OrderedDict({b'name':+b'Chapter_2_v8.0.pdf',+b'length':+5006359,+b'piece_length':+524288,+b'pieces':+b'\\x189\\x82\\xab.\\nG*hk)\\xe6\\xe3\\xc6%26\\xb4\\xd5\\xd0@\\xd6\\xe7\\xf1\\xcf\\xe3\\xc3\\x19\\xa4qDq\\xa3D\\xd8\\x7f\\xf4\\xda\\x96L\\xee\\xdb\\x83\\xaf\\xb2\\xe0\\x08\\x82\\x88\\x812\\xe9\\xf2D*\\xac/?\\xee\\x1f\\x19\\xc2r\\x8e\\xdd\\xa3aV\\xed\\x95Z\\xceh^\\x0e\\xd0\\xdf\\x11\\x8f%23\\x9dc\\xbf\\x1a2|\\xf2-\\x8b\\x7f\\t\\x90h\\xf4c\\x0b\\x1c\\x8e\\x00\\x02C\\xc4\\xef%25\\x9a\\x90S|\\x00\\xd1\\x86\\xfb\\xb9\\xa5\\x15P\\x1fl\\x01lT\\x8cKK\\x83\\x8f\\xd4\\x9aj\\xaa\\xf7.\\xfa\\xcc\\xa9p2(\\xd9\\xc3\\xde\\x10\\x8c\\xba\\xf6\\xcd\\xfc\\x81;\\xbdH(\\xcf!\\xc4\\x7f\\xf6DR\\x88\\x0f\\x1a\\x93v\\xdaj3\\xf9\\xf54:\\xc6:\\xf8\\x1c1\\xee\\xd8V\\x819\\x9b\\xbd\\xbf\\x8f\\xa6\\x87y\\xb7\\x81\\xc4wK^K!2HsI\\xd3L',+b'private':+0,+b'path':+b'D:\\\\CO3093+-++M\\xe1\\xba\\xa1ng+m\\xc3\\xa1y+t\\xc3\\xadnh\\\\Slides\\\\Slides_Nguy\\xe1\\xbb\\x85n+L\\xc3\\xaa+Duy+Lai_HK221\\\\Chapter_2_v8.0.pdf'})&peer_ip=127.0.0.1&port=6002 HTTP/1.1" 200 -
+2025-04-21 22:25:31,792 - INFO - Incoming connection from ('127.0.0.1', 57473)
+2025-04-21 22:25:31,793 - INFO - Handshake completed
+2025-04-21 22:25:31,793 - WARNING - Peer existed
+2025-04-21 22:25:31,793 - INFO - Connected to 127.0.0.1:6000
+2025-04-21 22:25:31,793 - INFO - Incoming connection from ('127.0.0.1', 57474)
+2025-04-21 22:25:31,794 - INFO - Handshake completed
+2025-04-21 22:25:31,794 - INFO - Connected to 127.0.0.1:6001
+2025-04-21 22:25:31,794 - INFO - Total chunks to download: 10
+2025-04-21 22:25:31,794 - INFO - Peer list: [['127.0.0.1', 6000], ['127.0.0.1', 6001], ['127.0.0.1', 6002]]
+2025-04-21 22:25:31,797 - INFO - Assembled Chapter_2_v8.0.pdf (5006359 bytes)
+2025-04-21 22:25:31,813 - INFO - Multi-peer download completed successfully.
+2025-04-21 22:25:45,069 - INFO - 127.0.0.1 - - [21/Apr/2025 22:25:45] "POST /time_update HTTP/1.1" 200 -
+2025-04-21 22:25:55,030 - INFO - 127.0.0.1 - - [21/Apr/2025 22:25:55] "POST /time_update HTTP/1.1" 200 -
+2025-04-21 22:26:06,324 - INFO - 127.0.0.1 - - [21/Apr/2025 22:26:06] "POST /time_update HTTP/1.1" 200 -
+2025-04-21 22:26:09,100 - INFO - Cleaned up inactive peers
+2025-04-21 22:26:44,100 - INFO - 127.0.0.1 - - [21/Apr/2025 22:26:44] "POST /peer_list_update HTTP/1.1" 200 -
+2025-04-21 22:26:44,103 - INFO - 127.0.0.1 - - [21/Apr/2025 22:26:44] "GET /announce?torrent_id=OrderedDict({b'name':+b'Chapter_2_v8.0.pdf',+b'length':+5006359,+b'piece_length':+524288,+b'pieces':+b'\\x189\\x82\\xab.\\nG*hk)\\xe6\\xe3\\xc6%26\\xb4\\xd5\\xd0@\\xd6\\xe7\\xf1\\xcf\\xe3\\xc3\\x19\\xa4qDq\\xa3D\\xd8\\x7f\\xf4\\xda\\x96L\\xee\\xdb\\x83\\xaf\\xb2\\xe0\\x08\\x82\\x88\\x812\\xe9\\xf2D*\\xac/?\\xee\\x1f\\x19\\xc2r\\x8e\\xdd\\xa3aV\\xed\\x95Z\\xceh^\\x0e\\xd0\\xdf\\x11\\x8f%23\\x9dc\\xbf\\x1a2|\\xf2-\\x8b\\x7f\\t\\x90h\\xf4c\\x0b\\x1c\\x8e\\x00\\x02C\\xc4\\xef%25\\x9a\\x90S|\\x00\\xd1\\x86\\xfb\\xb9\\xa5\\x15P\\x1fl\\x01lT\\x8cKK\\x83\\x8f\\xd4\\x9aj\\xaa\\xf7.\\xfa\\xcc\\xa9p2(\\xd9\\xc3\\xde\\x10\\x8c\\xba\\xf6\\xcd\\xfc\\x81;\\xbdH(\\xcf!\\xc4\\x7f\\xf6DR\\x88\\x0f\\x1a\\x93v\\xdaj3\\xf9\\xf54:\\xc6:\\xf8\\x1c1\\xee\\xd8V\\x819\\x9b\\xbd\\xbf\\x8f\\xa6\\x87y\\xb7\\x81\\xc4wK^K!2HsI\\xd3L',+b'private':+0,+b'path':+b'D:\\\\CO3093+-++M\\xe1\\xba\\xa1ng+m\\xc3\\xa1y+t\\xc3\\xadnh\\\\Slides\\\\Slides_Nguy\\xe1\\xbb\\x85n+L\\xc3\\xaa+Duy+Lai_HK221\\\\Chapter_2_v8.0.pdf'})&peer_ip=127.0.0.1&port=6002 HTTP/1.1" 200 -
+2025-04-21 22:26:44,105 - INFO - Incoming connection from ('127.0.0.1', 57519)
+2025-04-21 22:26:44,127 - INFO - Handshake completed
+2025-04-21 22:26:44,128 - INFO - Connected to 127.0.0.1:6000
+2025-04-21 22:26:44,129 - INFO - Incoming connection from ('127.0.0.1', 57520)
+2025-04-21 22:26:44,129 - WARNING - Peer existed
+ed
+2025-04-21 22:26:44,129 - INFO - Connected to 127.0.0.1:6001
+2025-04-21 22:26:44,129 - INFO - Total chunks to download: 10
+2025-04-21 22:26:44,129 - INFO - Peer list: [['127.0.0.1', 6000], ['127.0.0.1', 6001], ['127.0.0.1', 6002]]
+2025-04-21 22:26:44,134 - INFO - Assembled Chapter_2_v8.0.pdf (5006359 bytes)
+2025-04-21 22:26:44,148 - INFO - Multi-peer download completed successfully.
+2025-04-21 22:26:54,365 - INFO - 127.0.0.1 - - [21/Apr/2025 22:26:54] "POST /peer_list_update HTTP/1.1" 200 -
+2025-04-21 22:26:54,368 - INFO - 127.0.0.1 - - [21/Apr/2025 22:26:54] "GET /announce?torrent_id=OrderedDict({b'name':+b'Chapter_2_v8.0.pdf',+b'length':+5006359,+b'piece_length':+524288,+b'pieces':+b'\\x189\\x82\\xab.\\nG*hk)\\xe6\\xe3\\xc6%26\\xb4\\xd5\\xd0@\\xd6\\xe7\\xf1\\xcf\\xe3\\xc3\\x19\\xa4qDq\\xa3D\\xd8\\x7f\\xf4\\xda\\x96L\\xee\\xdb\\x83\\xaf\\xb2\\xe0\\x08\\x82\\x88\\x812\\xe9\\xf2D*\\xac/?\\xee\\x1f\\x19\\xc2r\\x8e\\xdd\\xa3aV\\xed\\x95Z\\xceh^\\x0e\\xd0\\xdf\\x11\\x8f%23\\x9dc\\xbf\\x1a2|\\xf2-\\x8b\\x7f\\t\\x90h\\xf4c\\x0b\\x1c\\x8e\\x00\\x02C\\xc4\\xef%25\\x9a\\x90S|\\x00\\xd1\\x86\\xfb\\xb9\\xa5\\x15P\\x1fl\\x01lT\\x8cKK\\x83\\x8f\\xd4\\x9aj\\xaa\\xf7.\\xfa\\xcc\\xa9p2(\\xd9\\xc3\\xde\\x10\\x8c\\xba\\xf6\\xcd\\xfc\\x81;\\xbdH(\\xcf!\\xc4\\x7f\\xf6DR\\x88\\x0f\\x1a\\x93v\\xdaj3\\xf9\\xf54:\\xc6:\\xf8\\x1c1\\xee\\xd8V\\x819\\x9b\\xbd\\xbf\\x8f\\xa6\\x87y\\xb7\\x81\\xc4wK^K!2HsI\\xd3L',+b'private':+0,+b'path':+b'D:\\\\CO3093+-++M\\xe1\\xba\\xa1ng+m\\xc3\\xa1y+t\\xc3\\xadnh\\\\Slides\\\\Slides_Nguy\\xe1\\xbb\\x85n+L\\xc3\\xaa+Duy+Lai_HK221\\\\Chapter_2_v8.0.pdf'})&peer_ip=127.0.0.1&port=6002 HTTP/1.1" 200 -
+2025-04-21 22:26:54,369 - INFO - Incoming connection from ('127.0.0.1', 57527)
+2025-04-21 22:26:54,379 - INFO - Handshake completed
+2025-04-21 22:26:54,379 - INFO - Connected to 127.0.0.1:6000
+2025-04-21 22:26:54,380 - INFO - Incoming connection from ('127.0.0.1', 57528)
+2025-04-21 22:26:54,395 - INFO - Handshake completed
+2025-04-21 22:26:54,395 - INFO - Connected to 127.0.0.1:6001
+2025-04-21 22:26:54,395 - INFO - Total chunks to download: 10
+2025-04-21 22:26:54,395 - INFO - Peer list: [['127.0.0.1', 6000], ['127.0.0.1', 6001], ['127.0.0.1', 6002]]
+2025-04-21 22:26:54,399 - INFO - Assembled Chapter_2_v8.0.pdf (5006359 bytes)
+2025-04-21 22:26:54,416 - INFO - Multi-peer download completed successfully.
+2025-04-21 22:27:00,602 - INFO - 127.0.0.1 - - [21/Apr/2025 22:27:00] "GET /stop?torrent_id=Chapter_2_v8.0.pdf.torrent&peer_ip=127.0.0.1&port=6002 HTTP/1.1" 200 -
+2025-04-21 22:27:00,603 - INFO - Initiating shutdown sequence...
+2025-04-21 22:27:00,603 - INFO - Closed connection to ('127.0.0.1', 6000)
+2025-04-21 22:27:00,604 - INFO - Closed connection to ('127.0.0.1', 6001)
+2025-04-21 22:27:00,604 - INFO - Peer server stopped
+2025-04-21 22:27:00,604 - INFO - Peer connection manager fully stopped
+2025-04-21 22:27:00,604 - INFO - Peer shutdown complete
+2025-04-21 22:27:02,854 - INFO - 127.0.0.1 - - [21/Apr/2025 22:27:02] "GET /stop?torrent_id=Chapter_2_v8.0.pdf.torrent&peer_ip=127.0.0.1&port=6001 HTTP/1.1" 200 -
+2025-04-21 22:27:02,856 - INFO - Initiating shutdown sequence...
+2025-04-21 22:27:02,857 - INFO - Closed connection to ('127.0.0.1', 57436)
+2025-04-21 22:27:02,857 - INFO - Closed connection to ('127.0.0.1', 57474)
+2025-04-21 22:27:02,857 - INFO - Closed connection to ('127.0.0.1', 57520)
+2025-04-21 22:27:02,857 - INFO - Closed connection to ('127.0.0.1', 57528)
+2025-04-21 22:27:02,857 - INFO - Peer server stopped
+2025-04-21 22:27:02,857 - INFO - Peer connection manager fully stopped
+2025-04-21 22:27:02,857 - INFO - Peer shutdown complete
+2025-04-21 22:27:04,624 - INFO - 127.0.0.1 - - [21/Apr/2025 22:27:04] "GET /stop?torrent_id=Chapter_2_v8.0.pdf.torrent&peer_ip=127.0.0.1&port=6000 HTTP/1.1" 200 -
+2025-04-21 22:27:04,624 - INFO - Initiating shutdown sequence...
+2025-04-21 22:27:04,625 - INFO - Closed connection to ('127.0.0.1', 57434)
+2025-04-21 22:27:04,625 - INFO - Closed connection to ('127.0.0.1', 57473)
+2025-04-21 22:27:04,625 - INFO - Closed connection to ('127.0.0.1', 57519)
+2025-04-21 22:27:04,625 - INFO - Closed connection to ('127.0.0.1', 57527)
+2025-04-21 22:27:04,625 - INFO - Peer server stopped
+2025-04-21 22:27:04,625 - INFO - Peer connection manager fully stopped
+2025-04-21 22:27:04,625 - INFO - Peer shutdown complete
+2025-04-21 22:27:06,744 - INFO - Shutting down tracker...
