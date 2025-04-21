@@ -33,7 +33,7 @@ A lightweight BitTorrent-inspired application that enables decentralized, scalab
 ```bash
 git clone https://github.com/tinta2510/torrent-like-application.git
 cd torrent-like-application/src
-pip install .
+pip install -r requirements.txt
 ```
 
 > It is recommended to use a virtual environment to isolate dependencies:
