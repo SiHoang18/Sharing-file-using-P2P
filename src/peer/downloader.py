@@ -12,6 +12,7 @@ class Downloader:
         self.chunks_data = {}
         self.max_connection = max_connection
         self.lock = threading.Lock()
+        self.assembled = False
         os.makedirs(self.save_path, exist_ok=True)
     def handle_chunk_data(self, peer_id, file_name, chunk_data, chunk_index):
         try:
@@ -27,11 +28,12 @@ class Downloader:
                     self.chunks_data[file_name] = []
                 if chunk_index not in self.active_downloads[peer_id][file_name]:
                     self.active_downloads[peer_id][file_name].append(chunk_index)
-            if chunk_data and chunk_data not in self.chunks_data:
-                self.chunks_data[file_name].append((chunk_index,chunk_data))
-                logger.info(f"Downloading {chunk_index} from {peer_id} completed")
-            if self._is_complete(file_name):
-                self._assemble_file(file_name)
+                if chunk_data and (chunk_index, chunk_data) not in self.chunks_data[file_name]:
+                    self.chunks_data[file_name].append((chunk_index,chunk_data))
+                    logger.info(f"Downloading {chunk_index} from {peer_id} completed")
+                if self._is_complete(file_name) and not self.assembled:
+                    self.assembled = True
+                    self._assemble_file(file_name)
             return True
         except Exception as e:
             logger.error(f"Download failed: {e}")

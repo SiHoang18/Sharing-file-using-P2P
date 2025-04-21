@@ -161,7 +161,6 @@ class Peer:
 
                     if success:
                         state = True
-                        logger.info(f"Chunk {chunk_index} downloaded from {peer_tuple}")
                         with download_lock:
                             downloaded_chunks.add(chunk_index)
                         return

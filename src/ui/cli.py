@@ -64,7 +64,7 @@ class InteractiveCLI(cmd.Cmd):
             self.filepath = args.filepath
             peer_list = self.active_peer.announce_to_tracker(
                 self.tracker_url,
-                args.filepath,
+                repr(self.metadata),
                 self.active_peer.host,
                 self.active_peer.port
             )
@@ -97,14 +97,14 @@ class InteractiveCLI(cmd.Cmd):
             self.filepath = args.filepath
             peer_list = self.active_peer.update_peer_list(
                 self.tracker_url,
-                args.filepath,
+                repr(self.metadata),
                 self.active_peer.host,
                 self.active_peer.port
             )
             if (self.active_peer.host, self.active_peer.port) not in peer_list:
                 self.active_peer.announce_to_tracker(
                     self.tracker_url,
-                    args.filepath,
+                    repr(self.metadata),
                     self.active_peer.host,
                     self.active_peer.port
                 )

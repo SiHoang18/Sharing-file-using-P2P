@@ -9,7 +9,10 @@ class TorrentParse:
         self.metadata = {}
         self.metadata = self.load_torrent()
     def load_torrent(self,filepath = TORRENT_FOLDER):
-        path_to_torrent_file = os.path.join(filepath, f"{self.torrent_file}")
+        if os.path.isfile(self.torrent_file):
+            path_to_torrent_file = self.torrent_file
+        else:
+            path_to_torrent_file = os.path.join(filepath, f"{self.torrent_file}")
         if not os.path.exists(path_to_torrent_file):
             logger.error(f"There is no file: {self.torrent_file}")
             return None 
