@@ -17,12 +17,12 @@ class Tracker:
         self._register_routes()
 
     def _register_routes(self):
-        @self.app.route('/announce', methods=['POST'])
+        @self.app.route('/announce', methods=['GET'])
         def announce():
-            data = request.get_json()
-            torrent_id = data.get("torrent_id")
-            peer_ip = data.get("peer_ip")
-            peer_port = data.get("port")
+            torrent_id = request.args.get("torrent_id")
+            peer_ip = request.args.get("peer_ip")
+            peer_port = int(request.args.get("port"))
+
             if not torrent_id or not peer_ip or not peer_port:
                 return jsonify({"error": "Missing fields"}), 400
 
@@ -47,12 +47,15 @@ class Tracker:
                 peers = self.peer_db.get_peers(torrent_id)
             return jsonify({"peers": peers})
 
-        @self.app.route('/stop', methods=['POST'])
+        @self.app.route('/stop', methods=['GET'])
         def stop():
-            data = request.get_json()
-            torrent_id = data.get("torrent_id")
-            peer_ip = data.get("peer_ip")
-            peer_port = data.get("port")
+            torrent_id = request.args.get("torrent_id")
+            peer_ip = request.args.get("peer_ip")
+            peer_port = int(request.args.get("port"))
+
+            if not torrent_id or not peer_ip or not peer_port:
+                return jsonify({"error": "Missing fields"}), 400
+
             with self.lock:
                 self.peer_db.remove_peer(torrent_id, (peer_ip, peer_port))
             return jsonify({"message": "Peer removed"})

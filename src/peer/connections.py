@@ -402,7 +402,7 @@ class PeerConnection:
         return self._receive_chunk_data(conn, data_length)
     def announce_to_tracker(self,tracker_url, torrent_id, peer_ip, port):
         try:
-            response = requests.post(tracker_url,json={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
+            response = requests.get(tracker_url,params={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
             if response.status_code == 200:
                 data = response.json()
                 print("Peer received from tracker:", data['peers'])
@@ -415,7 +415,7 @@ class PeerConnection:
             return []
     def stop_connect_to_tracker(self,tracker_url, torrent_id, peer_ip, port):
         try:
-            response = requests.post(tracker_url,json={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
+            response = requests.get(tracker_url,params={"torrent_id": torrent_id,"peer_ip": peer_ip,"port": port})
         except Exception as e:
             print("Error stopping tracker:", e)
     def update_peer_list(self,tracker_url, torrent_id, peer_ip, port):

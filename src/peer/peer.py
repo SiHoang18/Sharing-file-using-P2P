@@ -5,7 +5,7 @@ from utils.logger import logger
 from peer.connections import PeerConnection
 from peer.uploader import Uploader
 from peer.downloader import Downloader
-from utils.config import TRACKER_HOST,TRACKER_PORT, DOWNLOAD_FOLDER
+from utils.config import TRACKER_HOST,TRACKER_PORT, DOWNLOAD_FOLDER, UPDATE_INTERVAL
 class Peer:
     def __init__(self,
                  host: str = '127.0.0.1',
@@ -21,8 +21,9 @@ class Peer:
         self.max_connections = max_connections
         self.peer_list = ()
         self.save_path = save_path 
-        self.update_interval = 90
-        # self.is_seed = is_seed
+        self.update_event = threading.Event()
+        self.update_thread = False
+        self.update_lock = threading.Lock()
         # File management
         self.shared_files = shared_files or {}
         self.shared_files = {
@@ -95,20 +96,11 @@ class Peer:
         # self.uploader.stop()
         self.connection.stop()
         self.running = False
-    def start_periodic_updates(self, tracker_url, torrent_id):
-        self.active = True
-        def update_wrapper():
-            if self.active:
-                self.update_time(tracker_url, torrent_id, self.host, self.port)
-                # Reschedule
-                self.update_timer = threading.Timer(self.update_interval, update_wrapper)
-                self.update_timer.start()
-                
-        # Initial start
-        self.update_timer = threading.Timer(self.update_interval, update_wrapper)
-        self.update_timer.start()
+
     def stop(self) -> None:
         self.active = False
+        self.update_thread = False
+        self.update_event.set()
         if hasattr(self, "update_timer") and self.update_timer:
             self.update_timer.cancel()
             self.update_timer = None
@@ -156,7 +148,6 @@ class Peer:
         
         def download_chunk(chunk_index):
             threads = []
-            state = False
             for peer_address in self.peer_list:
                 peer_tuple = tuple(peer_address)
                 if peer_tuple == (self.host, self.port):
@@ -189,7 +180,10 @@ class Peer:
         else:
             missing = total_chunks - len(downloaded_chunks)
             logger.warning(f"{missing} chunks could not be downloaded.")
-
+    def update_shared_file(self, shared_file):
+        self.shared_files = shared_file
+        self.downloader.metadata = shared_file
+        self.uploader.shared_files = shared_file
     def update_peer_list(self,torrent_id):
         with self.lock:
             if not self.running:
@@ -212,7 +206,6 @@ class Peer:
             # Ensure file_id is a string
             if isinstance(file_id, bytes):
                 file_id = file_id.decode('utf-8', errors='replace')
-
             response = self.connection.send_message_to_peer(
                 peer_address=peer_address,
                 header={
@@ -253,12 +246,19 @@ class Peer:
             expect_response=expect_rep
         )
     def announce_to_tracker(self,tracker_url, torrent_id, peer_ip, port):
+        # self.update_thread = True
+        # self.update_time(tracker_url, torrent_id, peer_ip, port)
         return self.connection.announce_to_tracker(
             tracker_url=tracker_url + '/announce',
             torrent_id = torrent_id,
             peer_ip = peer_ip,
             port= port
         )
+    def update_loop(self, tracker_url, torrent_id):
+        while not self.update_event.is_set():
+            with self.update_lock:
+                self.update_time(tracker_url=tracker_url,torrent_id=torrent_id,peer_ip=self.host,port=self.port)
+            self.update_event.wait(UPDATE_INTERVAL)
     def stop_connect_to_tracker(self, tracker_url, torrent_id, peer_ip, port):
         try:
             return self.connection.stop_connect_to_tracker(
@@ -272,6 +272,7 @@ class Peer:
             return False
 
     def update_peer_list(self,tracker_url, torrent_id, peer_ip, port):
+        # self.update_time(tracker_url, torrent_id, peer_ip, port)
         return self.connection.update_peer_list(
             tracker_url=tracker_url + '/peer_list_update',
             torrent_id=torrent_id,
