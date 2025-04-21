@@ -115,7 +115,7 @@ class InteractiveCLI(cmd.Cmd):
             for peer in self.active_peer.peer_list:
                 if (self.active_peer.host, self.active_peer.port) != tuple(peer):
                     self.active_peer.connect_to_peer(tuple(peer))
-            self.active_peer.download(self.metadata[b'name'])
+            self.active_peer.download(self.metadata[b'name'],args.s)
         except SystemExit:
             pass
         except Exception as e:

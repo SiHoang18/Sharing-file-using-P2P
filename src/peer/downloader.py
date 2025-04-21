@@ -13,7 +13,7 @@ class Downloader:
         self.max_connection = max_connection
         self.lock = threading.Lock()
         self.assembled = False
-        os.makedirs(self.save_path, exist_ok=True)
+
     def handle_chunk_data(self, peer_id, file_name, chunk_data, chunk_index):
         try:
             with self.lock:
@@ -45,6 +45,7 @@ class Downloader:
 
     def _assemble_file(self, file_name):
         file_meta = self.metadata
+        os.makedirs(self.save_path, exist_ok=True)
         output_path = os.path.join(self.save_path, file_name)
         sorted_chunks = sorted(self.chunks_data[file_name], key=lambda x: x[0])
         with open(output_path, "wb") as f:

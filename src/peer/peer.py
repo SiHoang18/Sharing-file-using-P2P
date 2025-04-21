@@ -127,12 +127,13 @@ class Peer:
         return self.connection.connect_to_peer(peer_ip=address[0],peer_port=address[1])
     def get_peer_list(self,peer_list):
         self.peer_list = peer_list
-    def download(self, file_id):
+    def download(self, file_id,save_path):
         with self.lock:
             if not self.running:
                 logger.error("Peer not running")
                 return
-
+        self.save_path = save_path
+        self.downloader.save_path = save_path
         file_id_str = file_id.decode('utf-8') if isinstance(file_id, bytes) else file_id
 
         if b'pieces' not in self.shared_files:
