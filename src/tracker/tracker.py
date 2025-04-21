@@ -3,8 +3,6 @@ import threading
 from utils.config import TRACKER_HOST, TRACKER_PORT, CLEANUP_INTERVAL
 from utils.logger import logger
 from tracker.peers_db import Peer_DB
-import os
-import time
 class Tracker:
     def __init__(self, host=TRACKER_HOST, port=TRACKER_PORT):
         self.host = host
