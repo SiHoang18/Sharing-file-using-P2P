@@ -62,14 +62,16 @@ class InteractiveCLI(cmd.Cmd):
                 raise Exception("Invalid torrent metadata")
             self.tracker_url = args.tracker if args.tracker else torrent.get_announce_url()
             self.filepath = args.filepath
+            repr_str = repr(self.metadata)
+            repr_str = repr_str[:1024]
             peer_list = self.active_peer.announce_to_tracker(
                 self.tracker_url,
-                repr(self.metadata),
+                repr_str,
                 self.active_peer.host,
                 self.active_peer.port
             )
             if not self.active_peer.update_thread:
-                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,repr(self.metadata)),daemon=True).start()
+                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,repr_str),daemon=True).start()
                 self.active_peer.update_thread = True
             self.active_peer.get_peer_list(peer_list)
         except SystemExit:
@@ -95,21 +97,23 @@ class InteractiveCLI(cmd.Cmd):
                 raise Exception("Invalid torrent metadata")
             self.tracker_url = torrent.get_announce_url()
             self.filepath = args.filepath
+            repr_str = repr(self.metadata)
+            repr_str = repr_str[:1024]
             peer_list = self.active_peer.update_peer_list(
                 self.tracker_url,
-                repr(self.metadata),
+                repr_str,
                 self.active_peer.host,
                 self.active_peer.port
             )
             if (self.active_peer.host, self.active_peer.port) not in peer_list:
                 self.active_peer.announce_to_tracker(
                     self.tracker_url,
-                    repr(self.metadata),
+                    repr_str,
                     self.active_peer.host,
                     self.active_peer.port
                 )
             if not self.active_peer.update_thread:
-                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,repr(self.metadata)),daemon=True).start()
+                threading.Thread(target=self.active_peer.update_loop,args=(self.tracker_url,repr_str),daemon=True).start()
                 self.active_peer.update_thread = True
             self.active_peer.get_peer_list(peer_list)
             for peer in self.active_peer.peer_list:
